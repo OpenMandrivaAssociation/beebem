@@ -1,6 +1,6 @@
 %define	name	beebem
 %define	version	0.0.13
-%define	release	%mkrel 1
+%define	release	1
 %define	summary Beebem BBC Micro Emulator
 
 Name:		%{name}
@@ -20,8 +20,8 @@ URL:		http://beebem-unix.bbcmicro.com/index.html
 License:	Other
 Group:		Emulators
 BuildRoot:	 %{_tmppath}/%{name}-%{version}-%{release}-buildroot
-BuildRequires:	gtk2-devel 
-BuildRequires:	SDL1.2-devel
+BuildRequires:	pkgconfig(gtk+-2.0)
+BuildRequires:	pkgconfig(sdl)
 BuildRequires:  autoconf
 
 %description
@@ -45,7 +45,7 @@ version of BeebEm.
 %patch4 -p1
 
 %build
-autoconf
+autoreconf -fiv
 %configure
 %make
 
@@ -65,7 +65,7 @@ Exec=%{_bindir}/%{name}
 Icon=%{name}
 Terminal=false
 Type=Application
-Categories=Emulator;System
+Categories=Emulator;System;
 EOF
 
 install -D %SOURCE10 $RPM_BUILD_ROOT%_liconsdir/%name.png
