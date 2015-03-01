@@ -1,0 +1,120 @@
+--- beebem-0.0.13/src/beebem_pages.cpp.old	2009-02-03 07:45:15.000000000 +0000
++++ beebem-0.0.13/src/beebem_pages.cpp	2009-02-03 13:25:04.000000000 +0000
+@@ -344,21 +344,18 @@
+ 
+ // TEMP FILE SELECTOR ======================================================
+ 
+-static char *gtk_file_selector_filename_ptr;
++static char *gtk_file_chooser_filename_ptr;
+ static GtkWidget *filew;
+ int got_file;
+ bool was_full_screen = false;
+ 
+ /* Get the selected filename and print it to the console */
+-static void file_ok_sel( GtkWidget        *w,
+-                         GtkFileSelection *fs )
++static void file_ok_sel( GtkWidget        *w)
+ {
+-    	//g_print ("%s\n", gtk_file_selection_get_filename (GTK_FILE_SELECTION (fs)));
+-	strcpy( gtk_file_selector_filename_ptr, gtk_file_selection_get_filename (GTK_FILE_SELECTION (fs)) );
++	strcpy(gtk_file_chooser_filename_ptr,gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (w)));
+ 
+ 	got_file = true;
+ 
+-	gtk_widget_destroy(filew);
+ 	if (was_full_screen == true){
+ 		ToggleFullscreen();
+ 		EG_TickBox_Tick(gui.fullscreen_widget_ptr);
+@@ -383,22 +380,28 @@
+ 
+ 	gtk_init (&__argc, &__argv);
+ 
+-	gtk_file_selector_filename_ptr = filename_ptr;
++	gtk_file_chooser_filename_ptr = filename_ptr;
+ 
+-	filew = gtk_file_selection_new ("File selection");
++	filew = gtk_file_chooser_dialog_new ("File selection",NULL,GTK_FILE_CHOOSER_ACTION_SAVE, 
++			                                           GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
++								   GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
++								   NULL);
+ 
+-	g_signal_connect (G_OBJECT (filew), "destroy", G_CALLBACK (gtk_main_quit), NULL);
+-	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (filew)->ok_button), "clicked", G_CALLBACK (file_ok_sel), (gpointer) filew);
+-	g_signal_connect_swapped (G_OBJECT (GTK_FILE_SELECTION (filew)->cancel_button),"clicked"
+-	 , G_CALLBACK (gtk_widget_destroy), G_OBJECT (filew));
+-  
+ 	if (strlen(filename_ptr)>0)
+-		gtk_file_selection_set_filename (GTK_FILE_SELECTION(filew), filename_ptr);
++		gtk_file_chooser_set_filename (GTK_FILE_CHOOSER(filew), filename_ptr);
+ 	else
+-		gtk_file_selection_set_filename (GTK_FILE_SELECTION(filew), DATA_DIR"/media/discs/");
++		gtk_file_chooser_set_filename (GTK_FILE_CHOOSER(filew), DATA_DIR"/media/discs/");
++
++	if(gtk_dialog_run (GTK_DIALOG(filew)) == GTK_RESPONSE_ACCEPT)
++	{
++           file_ok_sel(filew);
++	}
+ 
+-	gtk_widget_show (filew);
+-	gtk_main ();
++	gtk_widget_hide_all( GTK_WIDGET(filew) );
++
++        while ( gtk_events_pending() ) gtk_main_iteration();
++
++	gtk_widget_destroy(filew);
+ 
+ 	was_full_screen = false;
+ 	return(got_file);
+@@ -423,23 +426,29 @@
+ 
+ 	gtk_init (&__argc, &__argv);
+ 
+-	gtk_file_selector_filename_ptr = filename_ptr;
++	gtk_file_chooser_filename_ptr = filename_ptr;
+ 
+-	filew = gtk_file_selection_new ("File selection");
++	filew = gtk_file_chooser_dialog_new ("File selection",NULL,GTK_FILE_CHOOSER_ACTION_OPEN,
++	                                                           GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
++	                                                           GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
++	                                      NULL);
+ 
+-	g_signal_connect (G_OBJECT (filew), "destroy", G_CALLBACK (gtk_main_quit), NULL);
+-	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (filew)->ok_button), "clicked", G_CALLBACK (file_ok_sel), (gpointer) filew);
+-	g_signal_connect_swapped (G_OBJECT (GTK_FILE_SELECTION (filew)->cancel_button),"clicked"
+-	 , G_CALLBACK (gtk_widget_destroy), G_OBJECT (filew));
+-  
+ 	if (strlen(filename_ptr)>0)
+-		gtk_file_selection_set_filename (GTK_FILE_SELECTION(filew), filename_ptr);  
++		gtk_file_chooser_set_filename (GTK_FILE_CHOOSER(filew), filename_ptr);  
+ 	else
+-		gtk_file_selection_set_filename (GTK_FILE_SELECTION(filew), DATA_DIR"/media/discs/");
+-  
+-	gtk_widget_show (filew);
+-	gtk_main ();
++		gtk_file_chooser_set_filename (GTK_FILE_CHOOSER(filew), DATA_DIR"/media/discs/");
++ 
++	if(gtk_dialog_run (GTK_DIALOG(filew)) == GTK_RESPONSE_ACCEPT)
++	{
++           file_ok_sel(filew);
++	}
++
++	gtk_widget_hide_all( GTK_WIDGET(filew) ); 
+ 
++	while ( gtk_events_pending() ) gtk_main_iteration();
++
++	gtk_widget_destroy(filew);
++       
+ 	was_full_screen = false;
+ 	return(got_file);
+ }
+--- beebem-0.0.13/configure.in.old	2009-02-03 13:29:21.000000000 +0000
++++ beebem-0.0.13/configure.in	2009-02-03 13:29:33.000000000 +0000
+@@ -17,7 +17,7 @@
+ 
+ 
+ # dnl Checks for GTK libraries.
+-AM_PATH_GTK_2_0(2.2.0,,AC_MSG_ERROR(mypkgname 0.1 needs GTK+ 2.2.0))
++AM_PATH_GTK_2_0(2.4.0,,AC_MSG_ERROR(mypkgname 0.1 needs GTK+ 2.4.0))
+ 
+ 
+ 
