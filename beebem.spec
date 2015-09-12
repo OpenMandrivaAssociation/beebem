@@ -1,6 +1,6 @@
 %define	name	beebem
 %define	version	0.0.13
-%define	release	1
+%define release	2
 %define	summary Beebem BBC Micro Emulator
 
 Name:		%{name}
