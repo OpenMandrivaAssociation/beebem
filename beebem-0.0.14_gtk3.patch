@@ -1,16 +1,16 @@
 --- beebem-0.0.14/configure.ac	2022-08-08 20:36:58.000000000 +0100
-+++ beebem-0.0.14.new/configure.ac	2024-04-06 10:18:48.531414533 +0100
++++ beebem-0.0.14.new/configure.ac	2024-04-06 12:08:39.137330539 +0100
 @@ -17,7 +17,7 @@
  
  
  # dnl Checks for GTK libraries.
 -AM_PATH_GTK_2_0(2.2.0,,AC_MSG_ERROR(mypkgname 0.1 needs GTK+ 2.2.0))
-+AM_PATH_GTK_2_0(2.4.0,,AC_MSG_ERROR(mypkgname 0.1 needs GTK+ 2.4.0))
++AM_PATH_GTK_3_0(3.4.0,,AC_MSG_ERROR(beebem 0.1 needs GTK+ 3.4.0))
  
  
  
 --- beebem-0.0.14/src/beebem_pages.cpp	2022-08-08 20:36:58.000000000 +0100
-+++ beebem-0.0.14.new/src/beebem_pages.cpp	2024-04-06 10:21:05.467480469 +0100
++++ beebem-0.0.14.new/src/beebem_pages.cpp	2024-04-06 12:11:22.173945823 +0100
 @@ -329,21 +329,18 @@
  
  // TEMP FILE SELECTOR ======================================================
@@ -53,8 +53,8 @@
 -                           "clicked", G_CALLBACK(gtk_widget_destroy),
 -                           G_OBJECT(filew));
 +  filew = gtk_file_chooser_dialog_new ("File selection",NULL,GTK_FILE_CHOOSER_ACTION_SAVE, 
-+                                                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-+                                                             GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
++                                                             "_Cancel", GTK_RESPONSE_CANCEL,
++                                                             "_Save", GTK_RESPONSE_ACCEPT,
 +                                                             NULL);
  
    if (strlen(filename_ptr) > 0)
@@ -72,7 +72,7 @@
 +      file_ok_sel(filew);
 +  }
 +
-+  gtk_widget_hide_all( GTK_WIDGET(filew) );
++  gtk_widget_hide( GTK_WIDGET(filew) );
 +
 +  while ( gtk_events_pending() ) gtk_main_iteration();
 +
@@ -96,8 +96,8 @@
 -                           "clicked", G_CALLBACK(gtk_widget_destroy),
 -                           G_OBJECT(filew));
 +  filew = gtk_file_chooser_dialog_new ("File selection",NULL,GTK_FILE_CHOOSER_ACTION_OPEN,
-+                                                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-+                                                             GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
++                                                             "_Cancel", GTK_RESPONSE_CANCEL,
++                                                             "_Open", GTK_RESPONSE_ACCEPT,
 +                                       NULL);
  
    if (strlen(filename_ptr) > 0)
@@ -115,7 +115,7 @@
 +      file_ok_sel(filew);
 +  }
 +
-+  gtk_widget_hide_all( GTK_WIDGET(filew) ); 
++  gtk_widget_hide( GTK_WIDGET(filew) ); 
 +
 +  while ( gtk_events_pending() ) gtk_main_iteration();
 +
