@@ -1,7 +1,7 @@
 Name:		beebem
 Summary:	Beebem BBC Micro Emulator
 Version:	0.0.14
-Release:	1
+Release:	2
 Source0:	https://github.com/beebem-unix/beebem/archive/refs/tags/v%{version}.tar.gz
 Source10:       beebem-big.png
 Source11:       beebem-mini.png
