@@ -1,16 +1,16 @@
 Name:		beebem
 Summary:	Beebem BBC Micro Emulator
-Version:	0.0.13
-Release:	4
-Source0:	http://beebem-unix.bbcmicro.com/download/%{name}-%{version}.tar.gz
+Version:	0.0.14
+Release:	1
+Source0:	https://github.com/beebem-unix/beebem/archive/refs/tags/v%{version}.tar.gz
 Source10:       beebem-big.png
 Source11:       beebem-mini.png
 Source12:       beebem.png
-Patch0:		beebem-0.0.13_64bit.patch
-Patch1:		beebem-0.0.13-keys.patch
-Patch2: 	beebem-0.0.13_menu_crash.patch
-Patch3:         beebem-0.0.13_gcc4.3.patch
-Patch4:		beebem-0.0.13_gtk_chooser.patch
+#Patch0:		beebem-0.0.13_64bit.patch
+#Patch1:		beebem-0.0.13-keys.patch
+#Patch2: 	beebem-0.0.13_menu_crash.patch
+#Patch3:         beebem-0.0.13_gcc4.3.patch
+Patch4:		beebem-0.0.14_gtk_chooser.patch
 URL:		http://beebem-unix.bbcmicro.com/index.html
 License:	Other
 Group:		Emulators
@@ -34,6 +34,7 @@ version of BeebEm.
 %autosetup -p1
 
 %build
+export CXXFLAGS="-Wno-unused-result"
 autoreconf -fiv
 %configure
 %make_build
