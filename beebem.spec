@@ -19,7 +19,6 @@ Patch4:		beebem-0.0.13_gtk_chooser.patch
 URL:		http://beebem-unix.bbcmicro.com/index.html
 License:	Other
 Group:		Emulators
-BuildRoot:	 %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	pkgconfig(gtk+-2.0)
 BuildRequires:	pkgconfig(sdl)
 BuildRequires:  autoconf
@@ -37,27 +36,20 @@ version of BeebEm for UNIX is an SDL port of the Windows
 version of BeebEm.
 
 %prep
-%setup -q 
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p0
-%patch4 -p1
+%autosetup -p1
 
 %build
 autoreconf -fiv
 %configure
-%make
+%make_build
 
 %install
-rm -rf %{buildroot}
-
-%makeinstall
+%old_makeinstall
 
 # Mandriva menu entry
 
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
-cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-%{name}.desktop << EOF
+cat > $RPM_BUILD_ROOT%{_datadir}/applications/%{name}.desktop << EOF
 [Desktop Entry]
 Name=Beebem
 Comment=BBC Micro/Master Emulator
@@ -72,14 +64,11 @@ install -D %SOURCE10 $RPM_BUILD_ROOT%_liconsdir/%name.png
 install -D %SOURCE11 $RPM_BUILD_ROOT%_miconsdir/%name.png
 install -D %SOURCE12 $RPM_BUILD_ROOT%_iconsdir/%name.png
 
-%clean
-rm -rf %{buildroot}
-
 %files
 %_bindir/beebem
 %dir %{_datadir}/beebem
 %{_datadir}/beebem/*
-%{_datadir}/applications/mandriva-%{name}.desktop
+%{_datadir}/applications/%{name}.desktop
 %_iconsdir/%name.png
 %_liconsdir/%name.png
 %_miconsdir/%name.png
