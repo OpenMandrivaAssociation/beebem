@@ -1,12 +1,7 @@
-%define	name	beebem
-%define	version	0.0.13
-%define release	3
-%define	summary Beebem BBC Micro Emulator
-
-Name:		%{name}
-Summary:	%{summary}
-Version:	%{version}
-Release:	%{release}
+Name:		beebem
+Summary:	Beebem BBC Micro Emulator
+Version:	0.0.13
+Release:	4
 Source0:	http://beebem-unix.bbcmicro.com/download/%{name}-%{version}.tar.gz
 Source10:       beebem-big.png
 Source11:       beebem-mini.png
