@@ -7,7 +7,7 @@ Source10:       beebem-big.png
 Source11:       beebem-mini.png
 Source12:       beebem.png
 Patch1:		beebem-0.0.14_gtk3.patch
-URL:		http://beebem-unix.bbcmicro.com/index.html
+URL:		https://beebem-unix.bbcmicro.com/index.html
 License:	Other
 Group:		Emulators
 BuildRequires:	pkgconfig(gtk+-3.0)
