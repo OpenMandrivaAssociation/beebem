@@ -10,6 +10,10 @@ Patch1:		beebem-0.0.14_gtk3.patch
 URL:		https://beebem-unix.bbcmicro.com/index.html
 License:	Other
 Group:		Emulators
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	pkgconfig(gtk+-3.0)
 BuildRequires:	pkgconfig(sdl)
 BuildRequires:  autoconf
